@@ -98,10 +98,11 @@ def read_1juzi():
 
                 data = copy.deepcopy(tags)
                 data['text'] = text
+                data['source'] = '1juzi'
                 db.texts_original.insert(data)
 
 
-def read_manual_data():
+def read_manually_data():
     for f in os.listdir(corpus_dir_colls):
         full_path = os.path.join(corpus_dir_colls, f)
         with codecs.open(full_path, 'r', encoding='utf8') as f:
@@ -114,6 +115,7 @@ def read_manual_data():
                     'text': text,
                     'has_dirty_words': 2,
                     'extra_tags': [],
+                    'source': 'manually'
                 })
 
 
@@ -124,8 +126,8 @@ if __name__ == '__main__':
     print 'importing 1juzi'
     read_1juzi()
 
-    print 'importing manual_data'
-    read_manual_data()
+    print 'importing manually_data'
+    read_manually_data()
 
     record_cnt = db.texts_original.count()
     print '%s records imported' % record_cnt

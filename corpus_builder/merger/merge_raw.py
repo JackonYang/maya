@@ -3,9 +3,13 @@ import re
 import codecs
 import os
 from HTMLParser import HTMLParser
+import copy
+from pymongo import MongoClient
 
 from text_cleaner import clean_html_tags
 
+
+db = MongoClient('mongo')['maya_corpus']
 
 h = HTMLParser()
 
@@ -91,7 +95,10 @@ def read_1juzi():
                 if not text:
                     continue
                 text = remove_ads(remove_seq(text))
-                print text
+
+                data = copy.deepcopy(tags)
+                data['text'] = text
+                db.texts_original.insert(data)
 
     # m = pid_ptn.findall(content)
     # for next_pid in set(m):
@@ -99,4 +106,7 @@ def read_1juzi():
 
 
 if __name__ == '__main__':
+    print 'dropping existing data'
+    db.texts_original.drop()
+    print 'importing data'
     read_1juzi()

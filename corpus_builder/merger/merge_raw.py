@@ -2,7 +2,6 @@
 import re
 import codecs
 import os
-from lxml import etree
 from HTMLParser import HTMLParser
 
 from text_cleaner import clean_html_tags
@@ -17,6 +16,8 @@ PROJ_BASE_DIR = os.path.dirname(
         os.path.dirname(os.path.abspath(__file__))))
 corpus_dir_1juzi = os.path.join(PROJ_BASE_DIR, 'data', '1juzi')
 corpus_dir_colls = os.path.join(PROJ_BASE_DIR, 'data', 'manually')
+
+seq_ptn = re.compile(ur'^\d+\u3001')
 
 
 def _flag_dirty_words(text):
@@ -56,6 +57,15 @@ def remove_stop_words(text):
         text = text.replace(k, '')
     return text
 
+
+def remove_seq(text):
+    return seq_ptn.sub('', text)
+
+
+def remove_ads(text):
+    return text.replace(u'句子大全http://Www.1juzI.coM/', '')
+
+
 def read_tags(title):
     new_text = remove_stop_words(title)
     has_dirty_words, new_text = _flag_dirty_words(new_text)
@@ -75,12 +85,18 @@ def read_1juzi():
             newText, tags = read_tags(title)
             if newText:
                 tags['extra_tags'].append(newText)
-            print title, tags
-            # f.readlines()
+
+            for record in f.readlines():
+                text = clean_html_tags(record).strip()
+                if not text:
+                    continue
+                text = remove_ads(remove_seq(text))
+                print text
 
     # m = pid_ptn.findall(content)
     # for next_pid in set(m):
     #     download(next_pid)
 
 
-read_1juzi()
+if __name__ == '__main__':
+    read_1juzi()

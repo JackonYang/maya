@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+
+  web:
+    build:
+      context: .
+      # args:
+      #  - PIP_HOST=host
+      #  - PIP_ROOT_URL=url
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/src
+    environment:
+      - DEFAULT_REDIS_CONN=redis://redis:6379/0
+      - MONITOR_REDIS_CONN=redis://redis:6379/9
+      - DEBUG=True
+    depends_on:
+      - redis
+      - mongo
+    command:
+        python manage.py runserver 0.0.0.0:8000
+    hostname: django-docker
+
+  redis:
+    # image: redis:3.2.4
+    image: redis:2.8.23
+
+  mongo:
+    build: ./deploy/mongo
+    volumes:
+      - /mnt/data/maya/dump:/mnt/data/dump
+    ports:
+      - 27010:27017

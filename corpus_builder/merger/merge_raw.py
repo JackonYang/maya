@@ -100,13 +100,32 @@ def read_1juzi():
                 data['text'] = text
                 db.texts_original.insert(data)
 
-    # m = pid_ptn.findall(content)
-    # for next_pid in set(m):
-    #     download(next_pid)
+
+def read_manual_data():
+    for f in os.listdir(corpus_dir_colls):
+        full_path = os.path.join(corpus_dir_colls, f)
+        with codecs.open(full_path, 'r', encoding='utf8') as f:
+            for record in f.readlines():
+                text = clean_html_tags(record).strip()
+                if not text:
+                    continue
+                text = remove_seq(text)
+                db.texts_original.insert({
+                    'text': text,
+                    'has_dirty_words': 2,
+                    'extra_tags': [],
+                })
 
 
 if __name__ == '__main__':
     print 'dropping existing data'
     db.texts_original.drop()
-    print 'importing data'
+
+    print 'importing 1juzi'
     read_1juzi()
+
+    print 'importing manual_data'
+    read_manual_data()
+
+    record_cnt = db.texts_original.count()
+    print '%s records imported' % record_cnt

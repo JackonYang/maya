@@ -26,6 +26,30 @@
 
 我们既要有核武器，又要有不首先使用核武器的克制。
 
+
+## 开发环境搭建
+
+- python 3.7
+- MongoDB
+
+```bash
+pip install -r requirements.txt
+```
+
+
+## 导入初始的数据集
+
+```bash
+$ cd corpus_builder/merger
+$ python merge_raw.py
+dropping existing data
+importing 1juzi
+importing manually_data
+5823 records imported
+```
+
+数据集如何被构建的：[corpus_builder.Readme](corpus_builder/README.md)
+
 ## 阅读材料
 
 - [中文脏话大全（附拼音及英文）](https://en.wikipedia.org/wiki/Mandarin_Chinese_profanity) -- Wikipedia. 分类详细。

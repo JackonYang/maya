@@ -1,15 +1,14 @@
-# -*- coding:utf-8 -*-
 import re
 import codecs
 import os
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 import copy
 from pymongo import MongoClient
 
 from text_cleaner import clean_html_tags
 
 
-db = MongoClient('mongo')['maya_corpus']
+db = MongoClient('192.168.1.66')['maya_corpus']
 
 h = HTMLParser()
 
@@ -21,7 +20,7 @@ PROJ_BASE_DIR = os.path.dirname(
 corpus_dir_1juzi = os.path.join(PROJ_BASE_DIR, 'data', '1juzi')
 corpus_dir_colls = os.path.join(PROJ_BASE_DIR, 'data', 'manually')
 
-seq_ptn = re.compile(ur'^\d+\u3001')
+seq_ptn = re.compile(r'^\d+\u3001')
 
 
 def _flag_dirty_words(text):
@@ -99,7 +98,7 @@ def read_1juzi():
                 data = copy.deepcopy(tags)
                 data['text'] = text
                 data['source'] = '1juzi'
-                db.texts_original.insert(data)
+                db.texts_original.insert_one(data)
 
 
 def read_manually_data():
@@ -111,7 +110,7 @@ def read_manually_data():
                 if not text:
                     continue
                 text = remove_seq(text)
-                db.texts_original.insert({
+                db.texts_original.insert_one({
                     'text': text,
                     'has_dirty_words': 2,
                     'extra_tags': [],
@@ -120,14 +119,14 @@ def read_manually_data():
 
 
 if __name__ == '__main__':
-    print 'dropping existing data'
+    print('dropping existing data')
     db.texts_original.drop()
 
-    print 'importing 1juzi'
+    print('importing 1juzi')
     read_1juzi()
 
-    print 'importing manually_data'
+    print('importing manually_data')
     read_manually_data()
 
-    record_cnt = db.texts_original.count()
-    print '%s records imported' % record_cnt
+    record_cnt = db.texts_original.estimated_document_count()
+    print('%s records imported' % record_cnt)

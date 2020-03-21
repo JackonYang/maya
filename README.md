@@ -52,6 +52,7 @@ importing manually_data
 
 ## 阅读材料
 
+- [arxiv: Comparative Studies of Detecting Abusive Language on Twitter](https://arxiv.org/abs/1808.10245)
 - [中文脏话大全（附拼音及英文）](https://en.wikipedia.org/wiki/Mandarin_Chinese_profanity) -- Wikipedia. 分类详细。
 - 《[脏话文化史](https://book.douban.com/subject/2995283/)》 [PDF](https://github.com/JackonYang/maya/blob/master/references/%E8%84%8F%E8%AF%9D%E6%96%87%E5%8C%96%E5%8F%B2-(%E6%BE%B3)%E9%9C%B2%E4%B8%9D%C2%B7%E9%9F%A6%E6%B4%A5%E5%88%A9.pdf) -- (澳)露丝·韦津利
 - 《[论"他妈的!"](https://baike.baidu.com/item/%E8%AE%BA%E2%80%9C%E4%BB%96%E5%A6%88%E7%9A%84%EF%BC%81%E2%80%9D)》 -- 鲁迅
